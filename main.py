@@ -23,13 +23,19 @@ def fetch_customization_options(config_repo, config_path, token):
     return yaml.safe_load(response.text)
 
 def check_alerts_exceed_limit(alerts, options):
-    now = datetime.utcnow()
+    now = datetime.now()
     for alert in alerts:
         created_at = datetime.strptime(alert['created_at'], "%Y-%m-%dT%H:%M:%SZ")
         severity = alert['severity']
-        allowed_duration = timedelta(days=options[severity])
-        if now - created_at > allowed_duration:
-            return True
+        
+        # Access the nested configuration structure
+        if 'secret-scanning' in options and severity in options['secret-scanning']:
+            allowed_duration = timedelta(days=options['secret-scanning'][severity])
+            if now - created_at > allowed_duration:
+                return True
+        else:
+            # Default behavior if configuration is missing
+            print(f"Warning: Missing configuration for severity level '{severity}'")
     return False
 
 def post_pr_comment(repo, pr_number, token, alerts):

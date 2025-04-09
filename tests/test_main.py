@@ -20,7 +20,13 @@ class TestSecretScanningAction(unittest.TestCase):
     @patch('main.requests.get')
     def test_fetch_customization_options(self, mock_get):
         mock_response = MagicMock()
-        mock_response.text = 'high: 1\nmedium: 3\nlow: 7\n'
+        mock_response.text = '''
+secret-scanning:
+    low: 30
+    medium: 14
+    high: 7
+    critical: 3
+'''
         mock_get.return_value = mock_response
 
         config_repo = 'test/config_repo'
@@ -28,16 +34,17 @@ class TestSecretScanningAction(unittest.TestCase):
         token = 'test_token'
         options = fetch_customization_options(config_repo, config_path, token)
 
-        self.assertEqual(options['high'], 1)
-        self.assertEqual(options['medium'], 3)
-        self.assertEqual(options['low'], 7)
+        self.assertEqual(options['secret-scanning']['high'], 7)
+        self.assertEqual(options['secret-scanning']['medium'], 14)
+        self.assertEqual(options['secret-scanning']['low'], 30)
+        self.assertEqual(options['secret-scanning']['critical'], 3)
 
     def test_check_alerts_exceed_limit(self):
         alerts = [
             {'id': 1, 'secret': 'secret1', 'severity': 'high', 'created_at': '2022-01-01T00:00:00Z'},
             {'id': 2, 'secret': 'secret2', 'severity': 'medium', 'created_at': '2022-01-02T00:00:00Z'}
         ]
-        options = {'high': 1, 'medium': 3, 'low': 7}
+        options = {'secret-scanning': {'high': 7, 'medium': 14, 'low': 30, 'critical': 3}}
 
         self.assertTrue(check_alerts_exceed_limit(alerts, options))
 
@@ -61,7 +68,7 @@ class TestSecretScanningAction(unittest.TestCase):
     @patch('main.post_pr_comment')
     def test_main(self, mock_post_pr_comment, mock_check_alerts_exceed_limit, mock_fetch_customization_options, mock_fetch_secret_scanning_alerts):
         mock_fetch_secret_scanning_alerts.return_value = [{'id': 1, 'secret': 'secret1', 'severity': 'high', 'created_at': '2022-01-01T00:00:00Z'}]
-        mock_fetch_customization_options.return_value = {'high': 1, 'medium': 3, 'low': 7}
+        mock_fetch_customization_options.return_value = {'secret-scanning': {'high': 7, 'medium': 14, 'low': 30, 'critical': 3}}
         mock_check_alerts_exceed_limit.return_value = True
 
         with self.assertRaises(Exception) as context:
