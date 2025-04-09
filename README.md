@@ -21,15 +21,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        python-version: '3.x'
+        node-version: '14'
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        npm install
 
     - name: Run secret scanning action
       env:
@@ -37,7 +36,7 @@ jobs:
         CONFIG_REPO: ${{ secrets.CONFIG_REPO }}
         CONFIG_PATH: ${{ secrets.CONFIG_PATH }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
-      run: python main.py
+      run: node src/main.js
 ```
 
 ## Configuration
@@ -79,15 +78,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        python-version: '3.x'
+        node-version: '14'
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        npm install
 
     - name: Run secret scanning action
       env:
@@ -95,7 +93,7 @@ jobs:
         CONFIG_REPO: ${{ secrets.CONFIG_REPO }}
         CONFIG_PATH: ${{ secrets.CONFIG_PATH }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
-      run: python main.py
+      run: node src/main.js
 ```
 
 ## License
