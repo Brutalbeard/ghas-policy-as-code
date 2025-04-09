@@ -58,7 +58,7 @@ def post_pr_comment(repo, pr_number, token, alerts):
 def main():
     import os
     repo = os.getenv("GITHUB_REPOSITORY")
-    token = os.getenv("GITHUB_TOKEN")
+    token = os.getenv("POLICY_REPO_TOKEN")
     config_repo = os.getenv("CONFIG_REPO")
     config_path = os.getenv("CONFIG_PATH")
     pr_number = os.getenv("PR_NUMBER")

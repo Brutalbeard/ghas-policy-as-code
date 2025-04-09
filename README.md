@@ -33,7 +33,7 @@ jobs:
 
     - name: Run secret scanning action
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        POLICY_REPO_TOKEN: ${{ secrets.POLICY_REPO_TOKEN }}
         CONFIG_REPO: ${{ secrets.CONFIG_REPO }}
         CONFIG_PATH: ${{ secrets.CONFIG_PATH }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -56,7 +56,7 @@ Each key under `secret-scanning` represents a severity level of the alerts, and 
 
 ## Inputs
 
-- `github_token`: GitHub token to access the repository (required)
+- `policy_repo_token`: GitHub token to access the repository (required)
 - `config_repo`: Repository containing the customization options YAML file (required)
 - `config_path`: Path to the customization options YAML file (required)
 
@@ -91,7 +91,7 @@ jobs:
 
     - name: Run secret scanning action
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        POLICY_REPO_TOKEN: ${{ secrets.POLICY_REPO_TOKEN }}
         CONFIG_REPO: ${{ secrets.CONFIG_REPO }}
         CONFIG_PATH: ${{ secrets.CONFIG_PATH }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
