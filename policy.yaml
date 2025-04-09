@@ -1,0 +1,2 @@
+secret-scanning:
+    critical: 3  # Number of days a critical severity alert can be open
