@@ -21,23 +21,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        python-version: '3.x'
+        node-version: '14'
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        npm install
 
     - name: Run secret scanning action
       env:
-        POLICY_REPO_TOKEN: ${{ secrets.POLICY_REPO_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CONFIG_REPO: ${{ secrets.CONFIG_REPO }}
         CONFIG_PATH: ${{ secrets.CONFIG_PATH }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
-      run: python main.py
+      run: node src/main.js
 ```
 
 ## Configuration
@@ -56,7 +55,7 @@ Each key under `secret-scanning` represents a severity level of the alerts, and 
 
 ## Inputs
 
-- `policy_repo_token`: GitHub token to access the repository (required)
+- `github_token`: GitHub token to access the repository (required)
 - `config_repo`: Repository containing the customization options YAML file (required)
 - `config_path`: Path to the customization options YAML file (required)
 
@@ -79,23 +78,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        python-version: '3.x'
+        node-version: '14'
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        npm install
 
     - name: Run secret scanning action
       env:
-        POLICY_REPO_TOKEN: ${{ secrets.POLICY_REPO_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CONFIG_REPO: ${{ secrets.CONFIG_REPO }}
         CONFIG_PATH: ${{ secrets.CONFIG_PATH }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
-      run: python main.py
+      run: node src/main.js
 ```
 
 ## License
