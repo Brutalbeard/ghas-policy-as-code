@@ -46,12 +46,14 @@ jobs:
 The action requires a YAML file for customization options. The YAML file should be maintained in a separate repository and should contain the following structure:
 
 ```yaml
-low: 7
-medium: 3
-high: 1
+secret-scanning:
+    low: 30      # Number of days a low severity alert can be open
+    medium: 14   # Number of days a medium severity alert can be open
+    high: 7      # Number of days a high severity alert can be open
+    critical: 3  # Number of days a critical severity alert can be open
 ```
 
-Each key represents the severity level of the alerts, and the value represents the number of days an alert of that severity level can be open before it must be addressed.
+Each key under `secret-scanning` represents a severity level of the alerts, and the value represents the number of days an alert of that severity level can be open before it must be addressed.
 
 ## Inputs
 
