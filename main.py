@@ -58,16 +58,17 @@ def post_pr_comment(repo, pr_number, token, alerts):
 def main():
     import os
     repo = os.getenv("GITHUB_REPOSITORY")
-    token = os.getenv("POLICY_REPO_TOKEN")
+    repo_access_token = os.getenv("REPO_ACCESS_TOKEN")
     config_repo = os.getenv("CONFIG_REPO")
     config_path = os.getenv("CONFIG_PATH")
+    config_acccess_token = os.getenv("CONFIG_ACCESS_TOKEN")
     pr_number = os.getenv("PR_NUMBER")
 
-    alerts = fetch_secret_scanning_alerts(repo, token)
-    options = fetch_customization_options(config_repo, config_path, token)
+    alerts = fetch_secret_scanning_alerts(repo, repo_access_token)
+    options = fetch_customization_options(config_repo, config_path, config_acccess_token)
 
     if check_alerts_exceed_limit(alerts, options):
-        post_pr_comment(repo, pr_number, token, alerts)
+        post_pr_comment(repo, pr_number, repo_access_token, alerts)
         raise Exception("PR blocked due to secret scanning alerts exceeding allowed limit.")
 
 if __name__ == "__main__":

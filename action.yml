@@ -12,6 +12,9 @@ inputs:
   config_path:
     description: 'Path to the customization options YAML file'
     required: true
+  repo_access_token:
+    description: 'GitHub token to access the repository running the action'
+    required: true
 
 runs:
   using: 'python'
