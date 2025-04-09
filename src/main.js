@@ -1,6 +1,5 @@
-import axios from 'axios';
-import * as yaml from 'js-yaml';
-import { DateTime } from 'luxon';
+const axios = require('axios');
+const yaml = require('js-yaml');
 
 async function fetchSecretScanningAlerts(repo, token) {
     const url = `https://api.github.com/repos/${repo}/secret-scanning/alerts`;
@@ -9,6 +8,9 @@ async function fetchSecretScanningAlerts(repo, token) {
         "Accept": "application/vnd.github.v3+json"
     };
     const response = await axios.get(url, { headers });
+    if (!response || !response.data) {
+        throw new Error("Failed to fetch secret scanning alerts: Response data is undefined");
+    }
     return response.data;
 }
 
@@ -23,14 +25,15 @@ async function fetchCustomizationOptions(configRepo, configPath, token) {
 }
 
 function checkAlertsExceedLimit(alerts, options) {
-    const now = DateTime.now();
+    const now = new Date();
     for (const alert of alerts) {
-        const createdAt = DateTime.fromISO(alert.created_at);
+        const createdAt = new Date(alert.created_at);
         const severity = alert.severity;
 
         if (options['secret-scanning'] && options['secret-scanning'][severity]) {
             const allowedDuration = options['secret-scanning'][severity];
-            if (now.diff(createdAt, 'days').days > allowedDuration) {
+            const daysDifference = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
+            if (daysDifference > allowedDuration) {
                 return true;
             }
         } else {

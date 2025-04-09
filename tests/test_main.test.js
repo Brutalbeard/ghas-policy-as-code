@@ -1,7 +1,14 @@
-import { fetchSecretScanningAlerts, fetchCustomizationOptions, checkAlertsExceedLimit, postPrComment, main } from '../src/main';
-import axios from 'axios';
-import * as yaml from 'js-yaml';
-import { jest } from '@jest/globals';
+const {
+    fetchSecretScanningAlerts,
+    fetchCustomizationOptions,
+    checkAlertsExceedLimit,
+    postPrComment,
+    main
+} = require('../src/main');
+const axios = require('axios');
+const yaml = require('js-yaml');
+
+jest.mock('axios');
 
 describe('TestSecretScanningAction', () => {
 
@@ -9,7 +16,7 @@ describe('TestSecretScanningAction', () => {
         const mockResponse = {
             data: [{ id: 1, secret: 'secret1', severity: 'high', created_at: '2022-01-01T00:00:00Z' }]
         };
-        jest.spyOn(axios, 'get').mockResolvedValue(mockResponse);
+        axios.get.mockResolvedValue(mockResponse);
 
         const repo = 'test/repo';
         const token = 'test_token';
@@ -22,14 +29,14 @@ describe('TestSecretScanningAction', () => {
     test('fetchCustomizationOptions', async () => {
         const mockResponse = {
             data: `
-secret-scanning:
-    low: 30
-    medium: 14
-    high: 7
-    critical: 3
-`
+            secret-scanning:
+            low: 30
+            medium: 14
+            high: 7
+            critical: 3
+            `
         };
-        jest.spyOn(axios, 'get').mockResolvedValue(mockResponse);
+        axios.get.mockResolvedValue(mockResponse);
 
         const configRepo = 'test/config_repo';
         const configPath = 'config.yaml';
@@ -53,8 +60,7 @@ secret-scanning:
     });
 
     test('postPrComment', async () => {
-        const mockResponse = {};
-        jest.spyOn(axios, 'post').mockResolvedValue(mockResponse);
+        axios.post.mockResolvedValue({});
 
         const repo = 'test/repo';
         const prNumber = 1;
