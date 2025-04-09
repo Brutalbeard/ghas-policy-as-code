@@ -29,8 +29,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install poetry
-        poetry install
+        pip install -r requirements.txt
 
     - name: Run secret scanning action
       env:
@@ -88,8 +87,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install poetry
-        poetry install
+        pip install -r requirements.txt
 
     - name: Run secret scanning action
       env:
