@@ -1,0 +1,17 @@
+name: 'Secret Scanning Alert Action'
+description: 'A GitHub Action to check for secret scanning alerts and block PRs if necessary.'
+
+inputs:
+  github_token:
+    description: 'GitHub token to access the repository'
+    required: true
+  config_repo:
+    description: 'Repository containing the customization options YAML file'
+    required: true
+  config_path:
+    description: 'Path to the customization options YAML file'
+    required: true
+
+runs:
+  using: 'python'
+  main: 'main.py'
