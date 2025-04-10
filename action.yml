@@ -1,9 +1,10 @@
-name: 'Secret Scanning Alert Action'
-description: 'A GitHub Action to check for secret scanning alerts and block PRs if necessary.'
+name: 'GitHub Advanced Security Policy as Code'
+description: 'A GitHub Action to check for GHAS alerts and block PRs if necessary.'
+author: "John Celoria"
 
 inputs:
-  github_token:
-    description: 'GitHub token to access the repository'
+  policy_repo_token:
+    description: 'GitHub token to access the policy as code config file'
     required: true
   config_repo:
     description: 'Repository containing the customization options YAML file'
@@ -11,8 +12,11 @@ inputs:
   config_path:
     description: 'Path to the customization options YAML file'
     required: true
+  repo_access_token:
+    description: 'GitHub token to access the repository running the action'
+    required: true
 
 runs:
   using: 'node20'
-  main: 'src/main.js'
+  main: 'main.js'
   pre: 'npm install'
